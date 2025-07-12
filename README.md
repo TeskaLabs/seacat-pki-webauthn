@@ -24,7 +24,7 @@ This component allows secure authorization of configured actions using biometric
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd seacat-pki-auth-webui
+cd seacat-pki-webauthn
 ```
 
 2. Install dependencies:
