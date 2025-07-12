@@ -1,4 +1,4 @@
-# FIDO2/Authn Component for TeskaLabs SeaCat PKI
+# FIDO2/WebAuthn Component for TeskaLabs SeaCat PKI
 
 A React-based web component that provides FIDO2/WebAuthn authentication for _TeskaLabs SeaCat PKI_.
 This component allows secure authorization of configured actions using biometric authentication, security keys, or other FIDO2-compatible authenticators.
@@ -23,7 +23,7 @@ This component allows secure authorization of configured actions using biometric
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/TeskaLabs/seacat-pki-webauthn.git
 cd seacat-pki-webauthn
 ```
 
@@ -67,11 +67,23 @@ The component expects the following URL parameters:
 - `next` (optional): URL to redirect to after successful authorization
 
 ### Example URL
+
 ```
 https://fido2.example.com/?authid=1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef&tenant=mytenant&next=https://app.example.com/success
 ```
 
 ### Authentication Flow
+
+
+#### Prerequisities
+
+- Users registered their FIDO2/Webauthn tokens in the _TeskaLabs SeaCat PKI_.
+
+
+#### Steps
+
+1. The _User_ executes an action that is submitted thru _TeskaLabs SeaCat PKI_ API. The desired action is configured in the _TeskaLabs SeaCat PKI_ to be authorized.
+2. _TeskaLabs SeaCat PKI_ API returns "401" ...
 
 1. **Authorization Request**: User accesses the component with valid `authid` and `tenant` parameters
 2. **Data Display**: Authorization data is fetched and displayed in a JSON editor
@@ -98,6 +110,9 @@ pnpm build
 const authUrl = `/auth-component/?authid=${authid}&tenant=${tenant}&next=${encodeURIComponent(nextUrl)}`;
 window.location.href = authUrl;
 ```
+
+IMPORTANT: This authorization component must be exposed on the same domain (DNS) as Web UI of _TeskaLabs SeaCat PKI_.
+
 
 ### CORS Configuration
 
