@@ -15,7 +15,6 @@ function App() {
 	const [data, setData] = useState(null);
 
 	useEffect(() => {
-		
 		if (!authidRegex.test(authid)) {
 			setError("Invalid authorization.");
 			return;
@@ -28,18 +27,18 @@ function App() {
 
 		fetch(`/api/seacat-pki/${tenant}/auth/${authid}?next=${nextUrl}`)
 			.then(response => {
-				if (response.status == 404) {
+				if (response.status === 404) {
 					throw new Error("Requested authorization not found, maybe it is expired. Please try again.");
 				}
-				if (response.status != 200) {
+				if (response.status !== 200) {
 					throw new Error("Requested authorization fetch failed with status: " + response.status);
 				}
 				return response.json();
 			})
 			.then(data => {
-				if (data.result == 'OK') {
+				if (data.result === 'OK') {
 					setData(data.data);
-				} else if (data.result == 'NOT_FOUND') {
+				} else if (data.result === 'NOT_FOUND') {
 					setError("Requested authorization not found.");
 				} else {
 					setError("Error fetching authorization data: " + data.result);
@@ -58,7 +57,7 @@ function App() {
 
 		try {
 			const response1 = await fetch(`/api/seacat-pki/${tenant}/fido2/authentication_options?${params}`);
-			if (response1.status != 200) {
+			if (response1.status !== 200) {
 				throw new Error("FIDO2 authentication options fetch failed with status: " + response1.status);
 			}
 			const options = await response1.json();
@@ -67,16 +66,13 @@ function App() {
 				publicKey: {
 					...options,
 					challenge: Base64.decodeArrayBuffer(options.challenge),
-					allowCredentials: options.allowCredentials.map(x => {
-						return {
-							id: Base64.decodeArrayBuffer(x.id),
-							type: x.type,
-						}
-					})
+					allowCredentials: options.allowCredentials.map(x => ({
+						id: Base64.decodeArrayBuffer(x.id),
+						type: x.type,
+					}))
 				},
 			});
 
-			// Convert credential to JSON format
 			const credentialJSON = {
 				id: credential.id,
 				rawId: Base64.encodeArrayBuffer(credential.rawId),
@@ -98,12 +94,12 @@ function App() {
 				method: 'PUT',
 				body: JSON.stringify(credentialJSON),
 			});
-			if (response2.status != 200) {
+			if (response2.status !== 200) {
 				throw new Error("FIDO2 authentication failed with status: " + response2.status);
 			}
 			const result = await response2.json();
 			if (result.result === 'OK') {
-				alert("Success fully authorized.");
+				alert("Successfully authorized.");
 				setError(null);
 				if (nextUrl) {
 					window.location.href = nextUrl;
@@ -120,15 +116,15 @@ function App() {
 	return (
 		<div>
 			<h1>TeskaLabs SeaCat PKI Authorization</h1>
-			<div hidden={data === null}>
-				<div id="json-editor">
-					<JsonEditor data={data} viewOnly={true} minWidth={"100%"}/>
+			{data && (
+				<div>
+					<div id="json-editor">
+						<JsonEditor data={data} viewOnly={true} minWidth="100%"/>
+					</div>
+					<button id="authorize-button" onClick={authorize}>Authorize</button>
 				</div>
-				<button id="authorize-button" onClick={authorize}>Authorize</button>
-			</div>
-			<div id="error" hidden={error === null}>
-				{error}
-			</div>
+			)}
+			{error && <div id="error">{error}</div>}
 		</div>
 	)
 }
