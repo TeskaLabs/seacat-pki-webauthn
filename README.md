@@ -94,7 +94,8 @@ https://fido2.example.com/?authid=1234567890abcdef1234567890abcdef1234567890abcd
 3. The user is forwarded to `url`, add optional `next` parameter for a final user forward.
 4. User accesses the component with valid `authid` and `tenant` parameters
 5. Authorization data is fetched and displayed in a JSON editor
-   <img width="1904" height="1207" alt="seacat-pki-webauthn-1" src="https://github.com/user-attachments/assets/95d71159-80d8-4fbd-8c9b-3f8df9020512" />
+   <img width="1904" height="1207" alt="seacat-pki-webauthn-1" src="https://github.com/user-attachments/assets/92a9558d-8a74-4918-bf91-e90706c8081f" />
+
 
 6. User clicks "Authorize" to initiate FIDO2 authentication
 7. Browser prompts for FIDO2 authenticator (biometric, security key, etc.)
