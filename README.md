@@ -83,14 +83,27 @@ https://fido2.example.com/?authid=1234567890abcdef1234567890abcdef1234567890abcd
 #### Steps
 
 1. The _User_ executes an action that is submitted thru _TeskaLabs SeaCat PKI_ API. The desired action is configured in the _TeskaLabs SeaCat PKI_ to be authorized.
-2. _TeskaLabs SeaCat PKI_ API returns "401" ...
+2. _TeskaLabs SeaCat PKI_ API returns `401 Unauthorized` with `WWW-Authenticate` header set to `FIDO2 <authid>`. The body of such a response is as follows:
+   ```json
+   {
+       "result": "AUTHORIZATION_REQUIRED",
+       "authid": "235e241aaba02bf2fd0e3fac153e4aa282254d4fe1043f5cbe45d6010fcdbf49",
+       "url": "https://fido2.example.com/?authid=235e241aaba02bf2fd0e3fac153e4aa282254d4fe1043f5cbe45d6010fcdbf49&tenant=rootca"
+   }
+   ```
+3. The user is forwarded to `url`, add optional `next` parameter for a final user forward.
+4. User accesses the component with valid `authid` and `tenant` parameters
+5. Authorization data is fetched and displayed in a JSON editor
+   <img width="1904" height="1207" alt="seacat-pki-webauthn-1" src="https://github.com/user-attachments/assets/95d71159-80d8-4fbd-8c9b-3f8df9020512" />
 
-1. **Authorization Request**: User accesses the component with valid `authid` and `tenant` parameters
-2. **Data Display**: Authorization data is fetched and displayed in a JSON editor
-3. **FIDO2 Challenge**: User clicks "Authorize" to initiate FIDO2 authentication
-4. **Credential Verification**: Browser prompts for FIDO2 authenticator (biometric, security key, etc.)
-5. **Authorization**: Credential is verified and authorization is completed
-6. **Redirect**: User is redirected to the `next` URL if provided
+6. User clicks "Authorize" to initiate FIDO2 authentication
+7. Browser prompts for FIDO2 authenticator (biometric, security key, etc.)
+   <img width="1904" height="1207" alt="seacat-pki-webauthn-2" src="https://github.com/user-attachments/assets/e00bd1cb-e200-4419-b3b1-4543fbc27dad" />
+
+9. Credential is verified and authorization is completed
+10. User is redirected to the `next` URL if provided
+
+If the autorization fails, the error message is displayed to the user and flow is stoped.
 
 ## API Integration
 
