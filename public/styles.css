@@ -1,0 +1,15 @@
+:root {
+	color-scheme: auto;
+}
+
+body {
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+	padding: 4em !important;
+	height: 100%;
+	text-align: center;
+}
+
+#json-editor {
+	margin: 0 auto;
+	width: 50%;
+}
