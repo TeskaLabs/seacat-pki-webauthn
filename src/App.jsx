@@ -73,6 +73,7 @@ function App() {
 				},
 			});
 
+			// Convert credential to JSON format
 			const credentialJSON = {
 				id: credential.id,
 				rawId: Base64.encodeArrayBuffer(credential.rawId),
@@ -94,8 +95,11 @@ function App() {
 				method: 'PUT',
 				body: JSON.stringify(credentialJSON),
 			});
-			if (response2.status !== 200) {
-				throw new Error("FIDO2 authentication failed with status: " + response2.status);
+			if (response2.status == 400) {
+				setError("FIDO2 authentication successful but authorized operation failed.");
+				return;
+			} else if (response2.status !== 200) {
+				throw new Error("FIDO2 credential verification failed.");
 			}
 			const result = await response2.json();
 			if (result.result === 'OK') {
@@ -109,8 +113,7 @@ function App() {
 			}
 
 		} catch (e) {
-			console.error("FIDO2 credential verification failed:", e);
-			setError("FIDO2 credential verification failed. ");
+			setError("FIDO2 credential verification failed.");
 		}
 	}
 
