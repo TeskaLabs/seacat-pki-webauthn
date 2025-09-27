@@ -114,6 +114,7 @@ function App() {
 
 		} catch (e) {
 			setError("FIDO2 credential verification failed.");
+			console.error("FIDO2 credential verification failed.", e);
 		}
 	}
 
