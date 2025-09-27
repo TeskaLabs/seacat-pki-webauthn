@@ -25,7 +25,7 @@ function App() {
 			return;
 		}
 
-		fetch(`/api/seacat-pki/${tenant}/auth/${authid}?next=${nextUrl}`)
+		fetch(`/api/seacat-pki/${tenant}/auth/req/${authid}?next=${nextUrl}`)
 			.then(response => {
 				if (response.status === 404) {
 					throw new Error("Requested authorization not found, maybe it is expired. Please try again.");
@@ -105,6 +105,7 @@ function App() {
 			if (result.result === 'OK') {
 				alert("Successfully authorized.");
 				setError(null);
+				setData(null);
 				if (nextUrl) {
 					window.location.href = nextUrl;
 				}

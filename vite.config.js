@@ -10,7 +10,7 @@ export default defineConfig({
 			'/api/seacat-pki': {
 				target: 'http://localhost:8910',
 				changeOrigin: true,
-				rewrite: (path) => path.replace(/^\/api\/seacat-pki/, '/'),
+				rewrite: (path) => path.replace(/^\/api\/seacat-pki/, ''),
 			},
 		},
 	},
